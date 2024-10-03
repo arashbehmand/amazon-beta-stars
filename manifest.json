@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Amazon Beta Stars Enhancer",
+  "version": "1.0",
+  "description": "Enhances Amazon star ratings using beta distribution.",
+  "author": "arashbehmand",
+  "content_scripts": [
+    {
+      "matches": ["*://*.amazon.com/*", "*://*.amazon.co.uk/*"],
+      "js": ["jstat.min.js", "content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["blue-star.png", "white-star.png"],
+      "matches": ["<all_urls>"]
+  }],
+  "permissions": []
+}
