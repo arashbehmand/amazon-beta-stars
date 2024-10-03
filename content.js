@@ -3,6 +3,9 @@
 (function() {
   'use strict';
 
+  const PRIOR_MEAN = 0.76; // 3.8 / 5
+  const PRIOR_STRENGTH = 2; // Adjust as needed
+
   // Set to keep track of processed product items to avoid duplicates
   const processedItems = new WeakSet();
 
@@ -93,11 +96,13 @@
       return ['0', '0', '0', '0', '0'];
     }
 
-    const positiveOutcomes = (stars / 5) * reviews;
-    const negativeOutcomes = reviews - positiveOutcomes;
+    // Prior settings
+    const a_prior = PRIOR_MEAN * PRIOR_STRENGTH;
+    const b_prior = (1 - PRIOR_MEAN) * PRIOR_STRENGTH;
 
-    const a = positiveOutcomes + 1; // Adjusted alpha
-    const b = negativeOutcomes + 1; // Adjusted beta
+    // Posterior parameters
+    const a = (stars / 5) * reviews + a_prior;
+    const b = (5 - stars) / 5 * reviews + b_prior;
 
     const intensities = [];
     for (let i = 0; i < 5; i++) {
@@ -109,6 +114,7 @@
     }
     return intensities;
   }
+
 
   // Function to compute the beta cumulative distribution function
   function betaCDF(x, a, b) {
